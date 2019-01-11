@@ -1,0 +1,105 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+string bin[500];
+
+void wczytaj(string bin[500])
+{
+    ifstream binarne("binarne.txt");
+
+    for(int i = 0;i<500;i++)
+            binarne>>bin[i];
+
+    binarne.close();
+}
+
+bool czydwu(string biny)
+{
+    int l=biny.length()/2;
+    bool czy=true;
+
+    for(int i=0;i<l;i++)
+    {
+
+        if(biny[i]!=biny[i+l])
+        {
+            czy=false;
+            break;
+        }
+    }
+
+
+    return czy;;
+
+}
+
+
+bool poprawne(string biny)
+{
+    bool pop=true;
+
+    for(int i=0; i<biny.length()/4;i++)
+    {
+        cout<<biny<<endl;
+        if(9>biny[i]+biny[i+1]+biny[i+2])
+        {
+
+            pop=false;
+            break;
+        }
+    }
+
+     return pop;
+
+}
+
+int drugi(string bin[500])
+{
+    int liczba=0;
+
+    for(int i = 0;i<500;i++)
+    {
+
+        if(!poprawne(bin[i]))
+        {
+            liczba++;
+            cout<<liczba<<endl;
+        }
+    }
+
+
+
+    return liczba;
+
+}
+
+int main()
+{
+    ofstream wyniki("zadanie4.txt");
+
+    wczytaj(bin);
+
+    int dwucykliczny =0;
+    int maxIndex=0;
+    for(int i = 0;i<500;i++)
+    {
+        if(czydwu(bin[i]))
+        {
+            dwucykliczny++;
+            if(bin[i].length()>bin[maxIndex].length())
+                maxIndex=i;
+        }
+    }
+
+
+    wyniki<<"Liczba dwucyklicznych to:"<<dwucykliczny<<endl;
+    wyniki<<"max index to:"<<bin[maxIndex].length()<<endl;
+    wyniki<<"Najdluzsza linia to:"<<bin[maxIndex]<<endl;
+    wyniki<<"Liczba niepoprawnych napisow to:"<< drugi(bin)<<endl;
+
+    wyniki.close();
+
+    return 0;
+}
